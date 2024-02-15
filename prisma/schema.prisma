@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  profile    String
+  password   String
+  username   String
+  name       String
+  community  String
+  phone      String
+  email      String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt @default(now())
+  Tithe      Tithe[]
+  Tithers    Tithers[]
+}
+
+model Tithers {
+  id         Int      @id @default(autoincrement())
+  fullName   String
+  community  String
+  address    String
+  number     Int
+  district   String
+  city       String
+  zip        Int      @default(32450000)
+  phone      String?
+  email      String?
+  cpf        String   @unique
+  birthday   DateTime
+  gender     String
+  user_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+  Tithe      Tithe[]
+  user       User     @relation(fields: [user_id], references: [id])
+
+  @@index([user_id], map: "Tithers_user_id_fkey")
+}
+
+model Tithe {
+  id         Int      @id @default(autoincrement())
+  tither_id  Int
+  date       DateTime
+  value      Float
+  community  String
+  user_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+  tither     Tithers  @relation(fields: [tither_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
+
+  @@index([tither_id], map: "Tithe_tither_id_fkey")
+  @@index([user_id], map: "Tithe_user_id_fkey")
+}
