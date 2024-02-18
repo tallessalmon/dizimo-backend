@@ -31,6 +31,7 @@ export class AuthService {
       username: user.username,
       profile: user.profile,
       name: user.name,
+      community: user.community,
     };
 
     const token = await this.jwtService.signAsync(payload);

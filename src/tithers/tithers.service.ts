@@ -14,7 +14,18 @@ export class TithersService {
   }
 
   async findAll() {
-    const result = await this.prisma.tithers.findMany({});
+    const result = await this.prisma.tithers.findMany({
+      orderBy: {
+        fullName: 'asc',
+      },
+      include: {
+        Tithe: {
+          orderBy: {
+            date: 'desc',
+          },
+        },
+      },
+    });
     return result;
   }
 

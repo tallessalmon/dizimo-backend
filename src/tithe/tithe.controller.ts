@@ -8,16 +8,15 @@ import {
   Delete,
 } from '@nestjs/common';
 import { TitheService } from './tithe.service';
-import { CreateTitheDto } from './dto/create-tithe.dto';
-import { UpdateTitheDto } from './dto/update-tithe.dto';
+import { Prisma, Tithe } from '@prisma/client';
 
 @Controller('tithe')
 export class TitheController {
   constructor(private readonly titheService: TitheService) {}
 
   @Post()
-  create(@Body() createTitheDto: CreateTitheDto) {
-    return this.titheService.create(createTitheDto);
+  create(@Body() data: Prisma.TitheCreateInput): Promise<Tithe> {
+    return this.titheService.create(data);
   }
 
   @Get()
@@ -31,8 +30,8 @@ export class TitheController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTitheDto: UpdateTitheDto) {
-    return this.titheService.update(+id, updateTitheDto);
+  update(@Param('id') id: string, @Body() data: Prisma.TitheUpdateInput) {
+    return this.titheService.update(+id, data);
   }
 
   @Delete(':id')

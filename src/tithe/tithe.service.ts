@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTitheDto } from './dto/create-tithe.dto';
-import { UpdateTitheDto } from './dto/update-tithe.dto';
+import { PrismaService } from 'src/prisma.service';
+import { Prisma, Tithe } from '@prisma/client';
 
 @Injectable()
 export class TitheService {
-  create(createTitheDto: CreateTitheDto) {
-    return 'This action adds a new tithe';
+  constructor(private prisma: PrismaService) {}
+
+  async create(data: Prisma.TitheCreateInput): Promise<Tithe> {
+    const result = await this.prisma.tithe.create({
+      data,
+    });
+    return result;
   }
 
   findAll() {
@@ -16,8 +21,13 @@ export class TitheService {
     return `This action returns a #${id} tithe`;
   }
 
-  update(id: number, updateTitheDto: UpdateTitheDto) {
-    return `This action updates a #${id} tithe`;
+  update(id: number, data: Prisma.TitheUpdateInput): Promise<Tithe> {
+    return this.prisma.tithe.update({
+      where: {
+        id,
+      },
+      data,
+    });
   }
 
   remove(id: number) {
