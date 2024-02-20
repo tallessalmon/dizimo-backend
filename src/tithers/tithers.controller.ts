@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TithersService } from './tithers.service';
 import { Prisma, Tithers } from '@prisma/client';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('tithers')
 export class TithersController {
   constructor(private readonly tithersService: TithersService) {}

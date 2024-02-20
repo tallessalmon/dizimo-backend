@@ -13,8 +13,9 @@ export class TitheService {
     return result;
   }
 
-  findAll() {
-    return `This action returns all tithe`;
+  async findAll() {
+    const result = await this.prisma.tithe.findMany();
+    return result;
   }
 
   findOne(id: number) {

@@ -12,7 +12,7 @@ import { PrismaService } from 'src/prisma.service';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '10s' },
+      signOptions: { expiresIn: '60m' },
     }),
   ],
   providers: [AuthService, PrismaService],
