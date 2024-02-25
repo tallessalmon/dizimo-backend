@@ -16,6 +16,7 @@ model User {
   community  String
   phone      String
   email      String
+  status     Boolean
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt @default(now())
   Tithe      Tithe[]
@@ -59,4 +60,9 @@ model Tithe {
 
   @@index([tither_id], map: "Tithe_tither_id_fkey")
   @@index([user_id], map: "Tithe_user_id_fkey")
+}
+
+model Community {
+  id         Int      @id @default(autoincrement())
+  name       String
 }

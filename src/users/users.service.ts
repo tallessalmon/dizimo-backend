@@ -13,12 +13,16 @@ export class UsersService {
     return result;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.prisma.user.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
   }
 
   update(id: number, data: Prisma.UserUpdateInput): Promise<User> {
