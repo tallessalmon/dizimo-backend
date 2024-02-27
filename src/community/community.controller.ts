@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { CommunityService } from './community.service';
 import { Community, Prisma } from '@prisma/client';
 
@@ -19,6 +27,10 @@ export class CommunityController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.communityService.findOne(+id);
+  }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() data: Prisma.CommunityUpdateInput) {
+    return this.communityService.update(+id, data);
   }
 
   @Delete(':id')

@@ -65,4 +65,5 @@ model Tithe {
 model Community {
   id         Int      @id @default(autoincrement())
   name       String
+  status     Boolean @default(false)
 }
