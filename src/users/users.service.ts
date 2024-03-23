@@ -33,7 +33,7 @@ export class UsersService {
   async update(id: number, data: Prisma.UserUpdateInput): Promise<User> {
     const passwOld = await this.findOne(id);
     const hashedPassword = await bcrypt.hash(data.password, 12);
-    if (data.password !== passwOld) {
+    if (data.password !== passwOld.password) {
       return this.prisma.user.update({
         where: {
           id,
