@@ -53,6 +53,8 @@ model Tithe {
   date       DateTime
   value      Float
   community  String
+  mode_pay   String?
+  bank       String?
   user_id    Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
