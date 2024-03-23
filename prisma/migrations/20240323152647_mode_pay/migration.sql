@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `Tithe` ADD COLUMN `bank` VARCHAR(191) NULL,
+    ADD COLUMN `mode_pay` VARCHAR(191) NULL;
