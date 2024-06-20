@@ -14,7 +14,11 @@ export class TitheService {
   }
 
   async findAll() {
-    const result = await this.prisma.tithe.findMany();
+    const result = await this.prisma.tithe.findMany({
+      orderBy: {
+        date: 'asc'
+      }
+    });
     return result;
   }
 
