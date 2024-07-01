@@ -54,6 +54,8 @@ model Tithe {
   value      Float
   community  String
   user_id    Int
+  bank       String
+  mode_pay   String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
   tither     Tithers  @relation(fields: [tither_id], references: [id])
