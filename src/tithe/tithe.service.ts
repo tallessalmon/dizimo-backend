@@ -14,9 +14,14 @@ export class TitheService {
   }
 
   async findAll() {
+    const dateNow = new Date()
     const result = await this.prisma.tithe.findMany({
       orderBy: {
         date: 'asc'
+      },
+      where: {
+        date: {
+          gte: new Date(`${dateNow.getFullYear()}-01-01 00:00:00`)        }
       }
     });
     return result;
