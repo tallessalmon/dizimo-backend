@@ -6,10 +6,13 @@ import {
   Param,
   Delete,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { CommunityService } from './community.service';
 import { Community, Prisma } from '@prisma/client';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('community')
 export class CommunityController {
   constructor(private readonly communityService: CommunityService) {}

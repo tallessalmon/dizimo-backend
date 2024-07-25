@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
@@ -19,7 +19,7 @@ model User {
   email      String
   status     Boolean
   created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt @default(now())
+  updated_at DateTime  @default(now()) @updatedAt
   Tithe      Tithe[]
   Tithers    Tithers[]
 }
@@ -40,7 +40,7 @@ model Tithers {
   gender     String
   user_id    Int
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   Tithe      Tithe[]
   user       User     @relation(fields: [user_id], references: [id])
 
@@ -54,19 +54,33 @@ model Tithe {
   value      Float
   community  String
   user_id    Int
-  bank       String?
+  bank_id    Int      @default(0)
   mode_pay   String
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   tither     Tithers  @relation(fields: [tither_id], references: [id])
   user       User     @relation(fields: [user_id], references: [id])
+  bank       Bank     @relation(fields: [bank_id], references: [id])
 
   @@index([tither_id], map: "Tithe_tither_id_fkey")
   @@index([user_id], map: "Tithe_user_id_fkey")
+  @@index([bank_id], map: "Tithe_bank_id_fkey")
 }
 
 model Community {
-  id         Int      @id @default(autoincrement())
-  name       String
-  status     Boolean @default(false)
+  id     Int     @id @default(autoincrement())
+  name   String
+  status Boolean @default(false)
+}
+
+model Bank {
+  id                 Int     @id @default(autoincrement())
+  code               Int
+  bank_name          String
+  owner_account_name String
+  agency             String
+  account            String
+  pix_key            String
+  status             Boolean @default(true)
+  Tithe              Tithe[]
 }
