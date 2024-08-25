@@ -13,18 +13,43 @@ export class TitheService {
     return result;
   }
 
-  async findAll() {
+  async findAll(date: {initialDate?: string, finalDate?: string}) {
     const dateNow = new Date()
-    const result = await this.prisma.tithe.findMany({
-      orderBy: {
-        date: 'asc'
-      },
-      where: {
-        date: {
-          gte: new Date(`${dateNow.getFullYear()}-01-01 00:00:00`)        }
-      }
-    });
-    return result;
+    const start: Date | null = date.initialDate ? new Date(date.initialDate) : null;
+    const end: Date | null = date.finalDate ? new Date(date.finalDate) : null;
+
+    if (start && end && start <= end) { 
+      const result = await this.prisma.tithe.findMany({
+        where: {
+          date: {
+            gte: start,
+            lte: end,
+          },
+        },
+        orderBy: {
+          date: 'asc', 
+        },
+        include: {
+          tither : {
+            select: {
+              fullName: true
+            }
+          }
+        }
+      });
+      return result;
+    } else {
+      const result = await this.prisma.tithe.findMany({
+        where: {
+          date: {
+            gte: new Date(`${dateNow.getFullYear()}-01-01 00:00:00`)        }
+        },
+        orderBy: {
+          date: 'asc', 
+        },
+      });
+      return result;
+    }
   }
 
   findOne(id: number) {
