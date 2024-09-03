@@ -27,14 +27,14 @@ export class OffertoryService {
             },
           },
           orderBy: {
-            date: 'desc', 
+            date: 'asc', 
           },
         });
         return result;
       } else {
         const result = await this.prisma.offertory.findMany({
           orderBy: {
-            date: 'desc', 
+            date: 'asc', 
           },
         });
         return result;
