@@ -7,7 +7,10 @@ import * as qrcode from 'qrcode-terminal';
     provide: 'WHATSAPP_CLIENT',
     useFactory: async () => {
       const client = new Client({
-        authStrategy: new LocalAuth() 
+        authStrategy: new LocalAuth(),
+        puppeteer: {
+          args: ['--no-sandbox', '--disable-setuid-sandbox']
+        }
       });
       client.on('qr', qr => {
         qrcode.generate(qr, { small: true });
@@ -21,4 +24,4 @@ import * as qrcode from 'qrcode-terminal';
   }],
   exports: ['WHATSAPP_CLIENT'],
 })
-export class WhatsappModule {}
+export class WhatsappModule { }
