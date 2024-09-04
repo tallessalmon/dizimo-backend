@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { Client, LocalAuth } from 'whatsapp-web.js';
-import  qrcode from 'qrcode-terminal';
+import qrcode from 'qrcode-terminal';
 import chromium from 'chrome-aws-lambda';
 
 @Module({
@@ -10,9 +10,10 @@ import chromium from 'chrome-aws-lambda';
       const client = new Client({
         authStrategy: new LocalAuth(),
         puppeteer: {
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
           executablePath: await chromium.executablePath,
-        }
+          headless: chromium.headless,
+        },
       });
 
       client.on('qr', qr => {
