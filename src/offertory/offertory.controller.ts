@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } f
 import { OffertoryService } from './offertory.service';
 import { Prisma, Offertory } from '@prisma/client';
 import { AuthGuard } from 'src/auth/auth.guard';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 
 

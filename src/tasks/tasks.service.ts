@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import * as moment from 'moment-timezone';
 import { Cron, CronExpression, Interval } from '@nestjs/schedule';
-import * as sharp from 'sharp';
-import * as fs from 'fs';
+import sharp from 'sharp';
+import fs from 'fs';
 import { MessageMedia } from 'whatsapp-web.js';
 
 @Injectable()

@@ -12,7 +12,7 @@ import {
 import { TitheService } from './tithe.service';
 import { Prisma, Tithe } from '@prisma/client';
 import { AuthGuard } from 'src/auth/auth.guard';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 @UseGuards(AuthGuard)
 @Controller('tithe')
