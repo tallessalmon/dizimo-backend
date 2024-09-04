@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { Client, LocalAuth } from 'whatsapp-web.js';
-import * as qrcode from 'qrcode-terminal';
+import  qrcode from 'qrcode-terminal';
 import chromium from 'chrome-aws-lambda';
 
 @Module({
