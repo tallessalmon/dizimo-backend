@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import  moment from 'moment-timezone';
 import { Cron, CronExpression, Interval } from '@nestjs/schedule';
 import  sharp from 'sharp';
 import  fs from 'fs';
@@ -12,7 +11,7 @@ export class TasksService {
     @Inject('WHATSAPP_CLIENT') private readonly client: any,
     private prisma: PrismaService) { }
 
-  @Cron(CronExpression.EVERY_DAY_AT_8AM)
+  @Cron(CronExpression.EVERY_DAY_AT_NOON)
   async handleInterval() {
     const today = new Date();
     const month = today.getMonth() + 1;
@@ -46,42 +45,6 @@ export class TasksService {
       }
     }
   }
-
-  // @Interval(30000)
-  // async handleInterval() {
-  //   const today = new Date(moment('2024-07-06').toISOString()); // Use a data atual
-  //   const month = today.getMonth() + 1;
-  //   const day = today.getDate();
-
-  //   const results: any = await this.prisma.$queryRaw`
-  //     SELECT * FROM \`Tithers\`
-  //     WHERE EXTRACT(MONTH FROM \`birthday\`) = ${month}
-  //     AND EXTRACT(DAY FROM \`birthday\`) = ${day}
-  //   `;
-
-  //   for (const tither of results) {
-  //     const firstName = tither.fullName.split(" ")[0];
-  //     const svgBuffer = fs.readFileSync('./public/congratulacoes.svg');
-  //     const imgBuffer = Buffer.from(svgBuffer.toString().replace('%NOME%', firstName));
-
-  //     try {
-  //       const imagePath = `${firstName}.png`;
-
-  //       await sharp(imgBuffer)
-  //         .png()
-  //         .toFile(imagePath);
-
-  //       const chatId = this.formatPhoneNumber(tither.phone);
-  //       await this.sendMessage(chatId, imagePath, tither.phone, firstName);
-
-  //       fs.unlinkSync(imagePath);
-  //       console.log(`Imagem ${imagePath} enviada com sucesso para ${tither.phone}`);
-  //     } catch (err) {
-  //       console.error(`Erro ao gerar ou enviar a imagem para ${tither.fullName}: `, err);
-  //     }
-  //   }
-  // }
-  
 
   private async sendMessage(chatId: string, imagePath: string, phone: string, firstName: string) {
     const message = `Olá *${firstName.charAt(0) + firstName.toLocaleLowerCase().slice(1)}*,
