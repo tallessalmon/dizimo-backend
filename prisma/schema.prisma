@@ -9,20 +9,21 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  profile    String
-  password   String
-  username   String
-  name       String
-  community  String
-  phone      String
-  email      String
-  status     Boolean
-  created_at DateTime    @default(now())
-  updated_at DateTime    @default(now()) @updatedAt
-  Tithe      Tithe[]
-  Tithers    Tithers[]
-  Offertory  Offertory[]
+  id           Int         @id @default(autoincrement())
+  profile      String
+  password     String
+  username     String
+  name         String
+  community    String
+  phone        String
+  email        String
+  status       Boolean
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @default(now()) @updatedAt
+  Tithe        Tithe[]
+  Tithers      Tithers[]
+  Offertory    Offertory[]
+  Informations Informations[]
 }
 
 model Tithers {
@@ -97,4 +98,15 @@ model Bank {
   pix_key            String
   status             Boolean @default(true)
   Tithe              Tithe[]
+}
+
+model Informations {
+  id          Int      @id @default(autoincrement())
+  abrangence  String
+  message     String   @db.Text
+  image       String
+  user_id     Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  user        User?    @relation(fields: [user_id], references: [id])
 }

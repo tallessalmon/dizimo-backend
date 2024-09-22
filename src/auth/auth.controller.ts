@@ -27,6 +27,12 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('checkToken')
+  check() {
+    return ;
+  }
+
+  @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

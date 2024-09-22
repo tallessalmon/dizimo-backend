@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Cron, CronExpression, Interval } from '@nestjs/schedule';
-import  sharp from 'sharp';
-import  fs from 'fs';
+import sharp from 'sharp';
+import fs from 'fs';
 import { MessageMedia } from 'whatsapp-web.js';
+import axios from 'axios';
 
 @Injectable()
 export class TasksService {
@@ -66,6 +67,56 @@ export class TasksService {
     }
   }
 
+  async getInformationId(id) {
+    return await this.prisma.informations.findUnique({
+      where: {
+        id: Number(id) 
+      }, include :{
+        user: true,
+      }
+    })
+  }
+
+  async sendCustomMessage(data: { image: string, message: string, group: string[] }) {
+    const list = await this.prisma.tithers.findMany({
+      where: {
+        community: {
+          in: data.group
+        },
+      }
+    })
+
+  
+
+    await this.saveMessage(data)
+
+    const imageBuffer = await this.getImageBuffer(`https://images-psrl.s3.amazonaws.com/${data.image}`)
+
+    list.map(async (tither) => {
+      const chatId = this.formatPhoneNumber(tither.phone);
+      const media = new MessageMedia(`image/${data.image
+        .split(".")
+        .pop()}`, imageBuffer.toString('base64'), `https://images-psrl.s3.amazonaws.com/${data.image}`);
+      try {
+        const chat = await this.client.getChatById(chatId);
+        const firstName = tither.fullName.split(" ")[0];
+
+        if (chat) {
+          await chat.sendMessage(media, { caption: data.message.replace('%nome%', `*${firstName.charAt(0) + firstName.toLocaleLowerCase().slice(1)}*`) });
+          console.log(`Mensagem enviada para ${tither.phone}`);
+        } else {
+          console.log(`Chat não encontrado para ${tither.phone}`);
+        }
+      } catch (err) {
+        console.error(`Erro ao enviar mensagem para ${tither.phone}: `, err);
+      }
+    })
+  }
+
+  async getInformation() {
+    return this.prisma.informations.findMany({})
+  }
+
   private formatPhoneNumber(phone: string): string {
     const cleanedPhone = phone.replace(/\s+/g, '').replace(/\D/g, '');
 
@@ -81,6 +132,24 @@ export class TasksService {
 
     // Retorna o número no formato internacional
     return `55${ddd}${number}@c.us`;
+  }
+
+  private async getImageBuffer(url: string): Promise<Buffer> {
+    const response = await axios.get(url, {
+      responseType: 'arraybuffer',
+    });
+    return Buffer.from(response.data, 'binary');
+  }
+
+  private async saveMessage(data: any) {
+    return this.prisma.informations.create({
+      data: {
+        abrangence: JSON.stringify(data.group),
+        message: data.message,
+        image: data.image,
+        user_id: data.user_id
+      }
+    })
   }
 
 }
