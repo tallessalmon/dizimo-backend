@@ -11,9 +11,10 @@ import { OffertoryModule } from './offertory/offertory.module';
 import { TasksModule } from './tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
+import { ThemeModule } from './theme/theme.module';
 
 @Module({
-  imports: [AuthModule, TithersModule, TitheModule, UsersModule, CommunityModule, BanksModule, OffertoryModule, TasksModule, ScheduleModule.forRoot(), WhatsappModule],
+  imports: [AuthModule, TithersModule, TitheModule, UsersModule, CommunityModule, BanksModule, OffertoryModule, TasksModule, ScheduleModule.forRoot(), WhatsappModule, ThemeModule],
   controllers: [AppController],
   providers: [AppService]
 })
